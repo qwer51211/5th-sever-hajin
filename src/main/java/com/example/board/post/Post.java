@@ -1,9 +1,7 @@
 package com.example.board.post;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.board.member.Member;
+import jakarta.persistence.*;
 
 @Entity
 public class Post {
@@ -15,6 +13,10 @@ public class Post {
     private String title;     // 제목
     private String content;   // 내용
 
+    // 작성자 (게시글 여러 개 : 회원 한 명 = N:1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")   // DB에 member_id 라는 FK 컬럼이 생김
+    private Member member;
     // JPA가 객체 만들 때 기본 생성자가 필요함
     public Post() {}
 
@@ -23,4 +25,7 @@ public class Post {
     public void setTitle(String title) { this.title = title; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+
+    public Member getMember() { return member; }
+    public void setMember(Member member) { this.member = member; }
 }
